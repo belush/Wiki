@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using HtmlAgilityPack;
 using Wiki.BLL.DTO;
 using Wiki.BLL.Interfaces;
 using Wiki.DAL.Entities;
@@ -37,6 +39,7 @@ namespace Wiki.BLL.Logic
             }
 
             var record = _repository.Get(id.Value);
+            Mapper.CreateMap<Record, RecordDTO>();
             var recordDto = Mapper.Map<Record, RecordDTO>(record);
 
             return recordDto;
@@ -47,6 +50,66 @@ namespace Wiki.BLL.Logic
             Mapper.CreateMap<RecordDTO, Record>();
             var record = Mapper.Map<RecordDTO, Record>(recordDto);
             _repository.Add(record);
+        }
+
+        private string GetHistoryUrl(string inputUrl)
+        {
+            string url = inputUrl;
+            string keyWord = url.Substring(url.LastIndexOf("/") + 1);
+            string outputUrl = "https://ru.wikipedia.org/w/index.php?title=" + keyWord + "&action=history";
+            return outputUrl;
+        }
+
+        private string GetHistoryText(string historyUrl)
+        {
+            string searchString = "//div[@id='mw-content-text']";
+
+            HtmlWeb web = new HtmlWeb();
+            var page = web.Load(historyUrl);
+
+            HtmlNode historyPageContent = page.DocumentNode.SelectSingleNode(searchString);
+
+            return historyPageContent.InnerText;
+        }
+
+        private string GetHeader(string historyUrl)
+        {
+            string searchString = "//h1[@id='firstHeading']";
+
+            HtmlWeb web = new HtmlWeb();
+            var page = web.Load(historyUrl);
+
+            HtmlNode headerContent = page.DocumentNode.SelectSingleNode(searchString);
+            string replace = headerContent.InnerText.Replace(" — история изменений", "");
+            var header = replace.Replace("Index.php?title=", "");
+
+            return header;
+        }
+
+        private int GetNumberOfMaches(string text, string word)
+        {
+            int numberOfMaches = Regex.Matches(text, word).Count;
+
+            return numberOfMaches;
+        }
+
+        public RecordDTO RateArticle(string url)
+        {
+            var record = new RecordDTO();
+
+            string historyUrl = GetHistoryUrl(url);
+            string historyText = GetHistoryText(historyUrl);
+            string header = GetHeader(historyUrl);
+            string word = "отпатрулирована";
+            int mathes = GetNumberOfMaches(historyText, word);
+            double result = mathes * 100 / 50;
+
+            record.Result = result.ToString();
+            record.Url = url;
+            record.Header = header;
+            record.Date = DateTime.Now;
+
+            return record;
         }
 
         public void Delete(int id)

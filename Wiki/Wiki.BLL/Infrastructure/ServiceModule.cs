@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ninject.Modules;
+using Wiki.DAL.Context;
 using Wiki.DAL.Entities;
 using Wiki.DAL.Interfaces;
 using Wiki.DAL.Repositories;
@@ -21,7 +22,9 @@ namespace Wiki.BLL.Infrastructure
         public override void Load()
         {
             //Bind<IUnitOfWork>().To<EFUnitOfWork>().WithConstructorArgument(_connectionString); 
-            Bind<IRepository<Record>>().To<RecordRepository>().WithConstructorArgument(_connectionString);
+            WikiContext context = new WikiContext(_connectionString);
+
+            Bind<IRepository<Record>>().To<RecordRepository>().WithConstructorArgument(context);
         }
     }
 }

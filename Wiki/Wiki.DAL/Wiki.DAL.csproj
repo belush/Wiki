@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201603121209432_IsDeleted.Designer.cs">
       <DependentUpon>201603121209432_IsDeleted.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603151251404_header.cs" />
+    <Compile Include="Migrations\201603151251404_header.Designer.cs">
+      <DependentUpon>201603151251404_header.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\RecordRepository.cs" />
@@ -75,6 +79,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603121209432_IsDeleted.resx">
       <DependentUpon>201603121209432_IsDeleted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603151251404_header.resx">
+      <DependentUpon>201603151251404_header.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

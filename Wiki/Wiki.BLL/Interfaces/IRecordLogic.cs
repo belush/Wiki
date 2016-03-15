@@ -14,5 +14,6 @@ namespace Wiki.BLL.Interfaces
         void Add(RecordDTO recordDto);
         void Delete(int id);
         void Edit(RecordDTO recordDto);
+        RecordDTO RateArticle(string url);
     }
 }

@@ -20,5 +20,37 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    /*max-width: 280px;*/
+}
+
+.recordItemCursor{
+   cursor:pointer;
+}
+
+.howItWork tr td {
+      padding:5px;
+}
+
+.text {
+    font-size: 20px;
+    line-height: 26px;
+    padding:2px;
+    background-color:#E8EAF6;
+}
+
+.image img {
+    width: 600px;
+    height:auto;
+    padding:7px;
+    background:#C5CAE9;
+}
+
+
+
+.img-right img {
+    float:right;
+}
+
+.img-left img {
+    float:left;
 }

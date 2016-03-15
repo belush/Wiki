@@ -12,6 +12,8 @@ namespace Wiki.BLL.DTO
 
         public string Url { get; set; }
 
+        public string Header { get; set; }
+
         public DateTime Date { get; set; }
 
         public string Result { get; set; }
